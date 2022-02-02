@@ -1,4 +1,5 @@
 import pickle
+import psycopg
 
 class Cadastro:
     def __init__(self, cpf, nome, idade, telefone):
@@ -11,6 +12,12 @@ class Sistema:
     def __init__(self):
         self.cadastros = []
         self.idadelist = []
+        self.connection = psycopg.connect(user="postgres",
+									  password="postgres",
+                                      port="5432",
+									  #host="127.0.0.1",
+                                      host="localhost"
+									  database="SRS")
 
     def validacao(self, c: Cadastro):
         try:
