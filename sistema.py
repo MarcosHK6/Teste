@@ -11,7 +11,7 @@ class Sistema:
     def __init__(self):
         self.cadastros = []
         self.idadelist = []
-        self.info = 'postgresql://postgres:postgres@localhost:5432/SRS'
+        self.info = 'postgresql://postgres:postgres@localhost:5432/Pessoa'
         self.connection = psycopg.connect(conninfo=self.info)
         #self.connection = psycopg.connect(user="postgres",
 	    #								  password="postgres",
@@ -80,7 +80,10 @@ class Sistema:
         cursor = self.connection.cursor()
         consulta = f"DELETE FROM PESSOA WHERE CPF = '{cpf}'"
         cursor.execute(consulta)
-        excluido = cursor.rowcount()
+        #self.connection.commit()
+        excluido = cursor.rowcount
+        self.connection.commit()
+        cursor.close()
         if excluido == 1:
             return True
         else:

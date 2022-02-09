@@ -47,7 +47,7 @@ Página Principal
         idade = input("Insira a idade: ")
         telefone = input("Insira o telefone: ")
         cadastro = sist.put(cpf, nome, idade, telefone)
-        if cadastro:
+        if cadastro == 0:
             print("\nCadastro efetuado com sucesso!\n")
         elif cadastro == 1:
             print("\nEste CPF já está cadastrado no sistema\n")
@@ -62,13 +62,13 @@ Página Principal
             print("\nCadastro não encontrado\n")
         else:
             print(f"""\nCadastro encontrado!
-                
+
 CPF: {cpf}
 Nome: {pessoa.nome}
 Idade: {pessoa.idade}
 Telefone: {pessoa.telefone}\n""")
         input("Aperte Enter para continuar")
-    
+
     def excluir(self):
         cpf = input("Digite o CPF a ser excluído: ")
         excluir = sist.excluir(cpf)
