@@ -1,25 +1,25 @@
-CREATE TABLE Pessoa (
+CREATE TABLE IF NOT EXISTS Pessoa (
 	cpf varchar(11),
-	nome varchar(30),
-	idade integer,
+	nome varchar(30) NOT NULL,
+	idade integer NOT NULL,
 	telefone varchar(11),
 	PRIMARY KEY (cpf)
 );
 --CPF foi escolhido como chave primária por ser único a cada pessoa
 
-CREATE TABLE Cargo (
+CREATE TABLE IF NOT EXISTS Cargo (
 	cargo varchar(30),
 	salario_padrao integer,
 	PRIMARY KEY (cargo)
 );
 
-CREATE TABLE PessoaCargo (
+CREATE TABLE IF NOT EXISTS PessoaCargo (
 	cpf varchar(11),
 	cargo varchar(30),
 	salario integer,
 	PRIMARY KEY (cpf, cargo),
-	FOREIGN KEY (cpf) REFERENCES Pessoa,
-	FOREIGN KEY (cargo) REFERENCES Cargo
+	FOREIGN KEY (cpf) REFERENCES Pessoa ON DELETE RESTRICT,
+	FOREIGN KEY (cargo) REFERENCES Cargo ON DELETE RESTRICT
 );
 
 insert into Pessoa values ('18483639528', 'João Garcia', 24, '47994730648');

@@ -8,7 +8,6 @@ sist = Sistema()
 
 class Menu:
     def __init__(self):
-        sist.load()
         self.choices = {
             "1": self.cadastro,
             "2": self.consulta,
@@ -47,30 +46,78 @@ Página Principal
         nome = input("Insira o nome: ")
         idade = input("Insira a idade: ")
         telefone = input("Insira o telefone: ")
-        print(sist.validacao(Cadastro(cpf, nome, idade, telefone)))
+        cadastro = sist.put(cpf, nome, idade, telefone)
+        if cadastro:
+            print("\nCadastro efetuado com sucesso!\n")
+        elif cadastro == 1:
+            print("\nEste CPF já está cadastrado no sistema\n")
+        else:
+            print("\nCPF, idade e telefone devem ser informados exclusivamente por números\n")
         input("Aperte Enter para continuar")
 
     def consulta(self):
         cpf = input("Digite o CPF a ser consultado: ")
-        print(sist.consulta(cpf))
+        pessoa = sist.get(cpf)
+        if pessoa == None:
+            print("\nCadastro não encontrado\n")
+        else:
+            print(f"""\nCadastro encontrado!
+                
+CPF: {cpf}
+Nome: {pessoa.nome}
+Idade: {pessoa.idade}
+Telefone: {pessoa.telefone}\n""")
         input("Aperte Enter para continuar")
     
     def excluir(self):
         cpf = input("Digite o CPF a ser excluído: ")
-        print(sist.excluir(cpf))
+        excluir = sist.excluir(cpf)
+        if excluir:
+            print("\nCadastro excluído\n")
+        else:
+            print("\nCadastro não encontrado\n")
+        #print(sist.excluir(cpf))
         input("Aperte Enter para continuar")
     
     def relatorio1(self):
         print("Idade:\t\tPessoas com esta idade:\n")
-        sist.relatorio1()
+        relatorio1 = sist.relatorio1()
+        if relatorio1 == []:
+            print("\nNão existem pessoas cadastradas\n")
+        else:
+            for pessoa in relatorio1:
+                print(f"{pessoa[0]}\t\t{pessoa[1]}")
+        print()
         input("Aperte Enter para continuar")
     
     def relatorio2(self):
-        print(sist.relatorio2())
+        relatorio2 = sist.relatorio2()
+        if relatorio2[0] == []:
+            print("\nNão existem pessoas cadastradas\n")
+        else:
+            p_nova = relatorio2[0][0]
+            p_velha = relatorio2[0][1]
+            media = relatorio2[1]
+            print(f"""
+Pessoa mais nova:
+
+CPF: {p_nova[0]}
+Nome: {p_nova[1]}
+Idade: {p_nova[2]}
+Telefone: {p_nova[3]}
+
+Pessoa mais velha:
+
+CPF: {p_velha[0]}
+Nome: {p_velha[1]}
+Idade: {p_velha[2]}
+Telefone: {p_velha[3]}
+
+Média de todas as idades: {round(media,2)} anos
+""")
         input("Aperte Enter para continuar")
     
     def sair(self):
-        sist.save()
         print("Saiu")
         sys.exit(0)
 
