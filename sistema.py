@@ -1,6 +1,7 @@
 import psycopg
+from pydantic import BaseModel
 
-class Cadastro:
+class Cadastro():
     def __init__(self, cpf, nome, idade, telefone):
         self.cpf = cpf
         self.nome = nome
@@ -10,7 +11,6 @@ class Cadastro:
 class Sistema:
     def __init__(self):
         self.cadastros = []
-        self.idadelist = []
         self.info = 'postgresql://postgres:postgres@localhost:5432/Pessoa'
         self.connection = psycopg.connect(conninfo=self.info)
         #self.connection = psycopg.connect(user="postgres",
@@ -28,10 +28,11 @@ class Sistema:
         except ValueError:
             return False
         else:
+            cpf = str(cpf)
+            telefone = str(telefone)
             return True
 
     def consulta(self, cpf):
-        cpf = int(cpf)
         for c in self.cadastros:
             if c.cpf == cpf:
                 return c
@@ -42,8 +43,8 @@ class Sistema:
         pessoa = self.consulta(cpf)
         if pessoa == None:
             cursor = self.connection.cursor()
-            consulta = f"SELECT CPF, NOME, IDADE, TELEFONE FROM PESSOA WHERE CPF='{cpf}'"
-            cursor.execute(consulta)
+            consulta = f"SELECT CPF, NOME, IDADE, TELEFONE FROM PESSOA WHERE CPF = %s"
+            cursor.execute(consulta, (cpf,))
             encontrado = cursor.fetchone()
             if encontrado != None:
                 cpf = encontrado[0]
@@ -71,16 +72,15 @@ class Sistema:
     def create_pessoa(self, cpf, nome, idade, telefone):
         self.cadastros.append(Cadastro(cpf, nome, idade, telefone))
         cursor = self.connection.cursor()
-        consulta = f"INSERT INTO PESSOA VALUES ('{cpf}','{nome}',{idade},'{telefone}')"
-        cursor.execute(consulta)
+        consulta = "INSERT INTO PESSOA VALUES (%s, %s, %s, %s)"
+        cursor.execute(consulta, (cpf, nome, idade, telefone))
         self.connection.commit()
         cursor.close()
 
     def excluir(self, cpf):
         cursor = self.connection.cursor()
-        consulta = f"DELETE FROM PESSOA WHERE CPF = '{cpf}'"
-        cursor.execute(consulta)
-        #self.connection.commit()
+        consulta = f"DELETE FROM PESSOA WHERE CPF = %s"
+        cursor.execute(consulta, (cpf,))
         excluido = cursor.rowcount
         self.connection.commit()
         cursor.close()
