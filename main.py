@@ -1,12 +1,16 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.templating import Jinja2Templates
+from fastapi.responses import HTMLResponse
 from sistema import Pessoa, Sistema
 from pydantic import BaseModel
 
 sist = Sistema()
 app = FastAPI()
+templates = Jinja2Templates(directory="templates")
 
-@app.get("/")
-def root():
+@app.get("/", response_class=HTMLResponse)
+def root(request: Request):
+    return templates.TemplateResponse("home.html", {"request": request})
     return {"Hello": "World"}
 
 @app.get("/pessoa/getall")
@@ -14,7 +18,7 @@ def get_all():
     return sist.getall()
 
 @app.get("/pessoa/consulta/{cpf}")
-def consulta(cpf: str):
+def consulta(request: Request, cpf: str):
     if not sist.validacao(cpf):
         return {"Mensagem": "CPF deve ser informado exclusivamente por números"}
     pessoa = sist.get(cpf)
