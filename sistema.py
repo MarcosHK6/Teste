@@ -69,13 +69,16 @@ class Sistema:
             return pessoa
 
     def getall(self):
+        lista = []
         cursor = self.connection.cursor()
         consulta = "SELECT * FROM PESSOA"
         cursor.execute(consulta)
         all = cursor.fetchall()
         self.connection.commit()
         cursor.close()
-        return all
+        for pessoa in all:
+            lista.append(Pessoa(cpf=pessoa[0], nome=pessoa[1], idade=pessoa[2], telefone=pessoa[3]))
+        return lista
 
     def add_pessoa(self, pessoa: Pessoa):
         if self.get(pessoa.cpf) == None:

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        Cadastro de Pessoas
+    </title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+	<h1><center>Cadastro de Pessoas</center></h1>
+	<hr>
+			<div class="person-form">
+                <form onsubmit="event.preventDefault();onFormSubmit();" autocomplete="off">
+                    <div>
+                        <label>CPF*</label><label class="validation-error" id="CpfValidationError">Este campo é obrigatório</label>
+                        <input type="text" name="cpf" id="cpf">
+                    </div>
+                    <div>
+                        <label>Nome*</label><label class="validation-error" id="NameValidationError">Este campo é obrigatório</label>
+                        <input type="text" name="nome" id="nome">
+                    </div>
+                    <div>
+                        <label>Idade</label>
+                        <input type="text" name="idade" id="idade">
+                    </div>
+                    <div>
+                        <label>Telefone</label>
+                        <input type="text" name="telefone" id="telefone">
+                    </div>
+                    <div  class="form-action-buttons">
+                        <input type="submit" value="Submit">
+                    </div>
+                </form>
+		</div>
+		<br/>
+		<div class = "person-table">
+                <table class="list" id="personList">
+                    <thead>
+                        <tr>
+                            <th>CPF</th>
+                            <th>Nome</th>
+                            <th>Idade</th>
+                            <th>Telefone</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="allRows">
+
+                    </tbody>
+                </table>
+        </div>
+    <script src="script.js"></script>
+</body>
+</html>
