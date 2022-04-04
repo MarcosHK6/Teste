@@ -1,14 +1,14 @@
 from fastapi import FastAPI, Request
+from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from fastapi.encoders import jsonable_encoder
 from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 from sistema import Pessoa, Sistema
-from pydantic import BaseModel
 
 sist = Sistema()
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
+app.mount("/static", StaticFiles(directory="templates"), name="static")
 
 app.add_middleware(
     CORSMiddleware,
@@ -18,10 +18,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/", response_class=HTMLResponse)
-def root(request: Request):
-    return templates.TemplateResponse("home.html", {"request": request})
-    return {"Hello": "World"}
+@app.get("/")
+async def root(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
 
 @app.get("/pessoa/getall")
 def get_all():
@@ -39,6 +38,7 @@ def consulta(request: Request, cpf: str):
 
 @app.post("/pessoa/add")
 def add_pessoa(pessoa: Pessoa):
+    print(pessoa)
     if not sist.validacao(pessoa.cpf, pessoa.idade, pessoa.telefone):
         return {"Mensagem": "CPF, idade e telefone devem ser informados exclusivamente por números",
                 "status": 0}

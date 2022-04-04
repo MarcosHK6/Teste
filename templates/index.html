@@ -5,7 +5,7 @@
     <title>
         Cadastro de Pessoas
     </title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="{{ url_for('static', path='/style.css') }}">
 </head>
 
 <body>
@@ -31,7 +31,7 @@
                         <input type="text" name="telefone" id="telefone">
                     </div>
                     <div  class="form-action-buttons">
-                        <input type="submit" value="Submit">
+                        <input type="submit" value="Salvar">
                     </div>
                 </form>
 		</div>
@@ -52,6 +52,6 @@
                     </tbody>
                 </table>
         </div>
-    <script src="script.js"></script>
+    <script src="{{ url_for('static', path='/script.js') }}"></script>
 </body>
 </html>

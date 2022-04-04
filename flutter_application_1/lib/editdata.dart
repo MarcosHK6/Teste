@@ -1,24 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/person.dart';
+import 'person.dart';
 
-class AddRoute extends StatefulWidget {
-  const AddRoute({Key? key}) : super(key: key);
+class EditRoute extends StatefulWidget {
+  const EditRoute({Key? key}) : super(key: key);
+  static const routeName = '/edit';
 
   @override
-  _AddDataState createState() => _AddDataState();
+  _EditDataState createState() => _EditDataState();
 }
 
-class _AddDataState extends State<AddRoute> {
-  _AddDataState();
-
-  final _addFormKey = GlobalKey<FormState>();
-  final _cpfController = TextEditingController();
-  final _nameController = TextEditingController();
-  final _ageController = TextEditingController();
-  final _phoneController = TextEditingController();
+class _EditDataState extends State<EditRoute> {
+  _EditDataState();
 
 @override
   Widget build(BuildContext context) {
+    final person = ModalRoute.of(context)!.settings.arguments as Person;
+    final _editFormKey = GlobalKey<FormState>();
+    final _cpfController = TextEditingController(text: person.cpf);
+    final _nameController = TextEditingController(text: person.name);
+    final _ageController = TextEditingController(text: person.age.toString());
+    final _phoneController = TextEditingController(text: person.phone);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Adicionar cadastro'),
@@ -30,7 +31,7 @@ class _AddDataState extends State<AddRoute> {
               padding: const EdgeInsets.all(10.0),
               width: 440,
               child: Form(
-                key: _addFormKey,
+                key: _editFormKey,
                 child: 
                 Column(
                   children: <Widget>[
@@ -92,9 +93,9 @@ class _AddDataState extends State<AddRoute> {
                       margin: const EdgeInsets.fromLTRB(0, 20.0, 0, 10.0),
                       child: ElevatedButton(
                         onPressed: () {
-                          if (_addFormKey.currentState!.validate()) {
-                            _addFormKey.currentState!.save();
-                            postApi(Uri.parse('http://127.0.0.1:8000/pessoa/add'), {'cpf': _cpfController.text, 'name': _nameController.text, 'age': _ageController.text, 'phone': _phoneController.text});
+                          if (_editFormKey.currentState!.validate()) {
+                            _editFormKey.currentState!.save();
+                            // post
                             Navigator.pop(context);
                           }
                         },
