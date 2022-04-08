@@ -26,8 +26,8 @@ async def root(request: Request):
 def get_all():
     return sist.getall()
 
-@app.get("/pessoa/consulta/{cpf}")
-def consulta(request: Request, cpf: str):
+@app.get("/pessoa/consulta")
+def consulta(cpf: str):
     if not sist.validacao(cpf):
         return {"Mensagem": "CPF deve ser informado exclusivamente por números"}
     pessoa = sist.get(cpf)
@@ -38,7 +38,6 @@ def consulta(request: Request, cpf: str):
 
 @app.post("/pessoa/add")
 def add_pessoa(pessoa: Pessoa):
-    print(pessoa)
     if not sist.validacao(pessoa.cpf, pessoa.idade, pessoa.telefone):
         return {"Mensagem": "CPF, idade e telefone devem ser informados exclusivamente por números",
                 "status": 0}

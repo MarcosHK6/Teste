@@ -22,7 +22,7 @@ class _EditDataState extends State<EditRoute> {
     final _phoneController = TextEditingController(text: person.phone);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Adicionar cadastro'),
+        title: const Text('Editar cadastro'),
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -95,7 +95,7 @@ class _EditDataState extends State<EditRoute> {
                         onPressed: () {
                           if (_editFormKey.currentState!.validate()) {
                             _editFormKey.currentState!.save();
-                            // post
+                            putApi(Uri.parse('http://127.0.0.1:8000/pessoa/update'), {'cpf': _cpfController.text, 'nome': _nameController.text, 'idade': int.parse(_ageController.text), 'telefone': _phoneController.text});
                             Navigator.pop(context);
                           }
                         },

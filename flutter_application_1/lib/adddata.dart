@@ -91,11 +91,19 @@ class _AddDataState extends State<AddRoute> {
                     Container(
                       margin: const EdgeInsets.fromLTRB(0, 20.0, 0, 10.0),
                       child: ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           if (_addFormKey.currentState!.validate()) {
                             _addFormKey.currentState!.save();
-                            postApi(Uri.parse('http://127.0.0.1:8000/pessoa/add'), {'cpf': _cpfController.text, 'name': _nameController.text, 'age': _ageController.text, 'phone': _phoneController.text});
-                            Navigator.pop(context);
+                            final msg = await postApi(Uri.parse('http://127.0.0.1:8000/pessoa/add'), {'cpf': _cpfController.text, 'nome': _nameController.text, 'idade': int.parse(_ageController.text), 'telefone': _phoneController.text});
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: Text(msg),
+                                actions: <Widget>[
+                                  TextButton(onPressed: () {Navigator.pop(context);Navigator.of(context).pop();}, child: const Text("Ok"))
+                                ],
+                              )
+                            );
                           }
                         },
                         child: const Text('Salvar', style: TextStyle(color: Colors.white)),

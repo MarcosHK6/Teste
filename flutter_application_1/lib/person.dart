@@ -29,7 +29,7 @@ Future<List> getApi(Uri url) async {
   final response = await http.get(url);
 
   if (response.statusCode == 200) {
-    var parsed = json.decode(response.body);
+    var parsed = json.decode(utf8.decode(response.bodyBytes));
     List<Person> list = [];
     for (var item in parsed) {
       list.add(Person.fromJson(item));
@@ -40,15 +40,46 @@ Future<List> getApi(Uri url) async {
   }
 }
 
-Future postApi(Uri url, Map<String,String> person) async {
-  //Map<String,dynamic> data = {'cpf': person.cpf, 'nome': person.name, 'idade': person.age.toString(), 'telefone': person.phone};
+Future postApi(Uri url, Map<String,dynamic> person) async {
   final response = await http.post(url, headers: {'Content-type': 'application/json'}, body: json.encode(person));
-  print(json.encode(person));
 
   if (response.statusCode == 200) {
-    var parsed = json.decode(response.body);
-    return parsed;
+    var parsed = json.decode(utf8.decode(response.bodyBytes));
+    return parsed["Mensagem"];
   } else {
     throw Exception('Falha ao adicionar cadastro');
+  }
+}
+
+Future putApi(Uri url, Map<String,dynamic> person) async {
+  final response = await http.put(url, headers: {'Content-type': 'application/json'}, body: json.encode(person));
+
+  if (response.statusCode == 200) {
+    var parsed = json.decode(utf8.decode(response.bodyBytes));
+    return parsed;
+  } else {
+    throw Exception('Falha ao editar cadastro');
+  }
+}
+
+Future delApi(Uri url, Map<String,dynamic> person) async {
+  final response = await http.delete(url, headers: {'Content-type': 'application/json'}, body: json.encode(person));
+
+  if (response.statusCode == 200) {
+    var parsed = json.decode(utf8.decode(response.bodyBytes));
+    return parsed["Mensagem"];
+  } else {
+    throw Exception('Falha ao excluir cadastro');
+  }
+}
+
+Future getReport1(Uri url) async {
+  final response = await http.get(url);
+
+  if (response.statusCode == 200) {
+    var parsed = json.decode(utf8.decode(response.bodyBytes));
+    return parsed;
+  } else {
+    throw Exception('Falha ao carregar lista de cadastros');
   }
 }
