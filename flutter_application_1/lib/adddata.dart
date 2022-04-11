@@ -72,6 +72,9 @@ class _AddDataState extends State<AddRoute> {
                         if (value!.isEmpty) {
                           return 'Insira a idade';
                         }
+                        if (value.runtimeType != int) {
+                          return 'A idade deve ser composta apenas por números';
+                        }
                         return null;
                       },
                     ),
@@ -84,6 +87,9 @@ class _AddDataState extends State<AddRoute> {
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Insira o telefone';
+                        }
+                        if (value.runtimeType != int) {
+                          return 'O telefone deve ser composto apenas por números';
                         }
                         return null;
                       },

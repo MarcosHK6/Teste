@@ -46,6 +46,12 @@ class _EditDataState extends State<EditRoute> {
                         if (value!.isEmpty) {
                           return 'Insira o CPF';
                         }
+                        if (value.runtimeType != int) {
+                          return 'O CPF deve ser composto apenas por números';
+                        }
+                        if (value.length != 11) {
+                          return 'O CPF deve ter 11 dígitos';
+                        }
                         return null;
                       },
                     ),
@@ -73,6 +79,9 @@ class _EditDataState extends State<EditRoute> {
                         if (value!.isEmpty) {
                           return 'Insira a idade';
                         }
+                        if (value.runtimeType != int) {
+                          return 'A idade deve ser composta apenas por números';
+                        }
                         return null;
                       },
                     ),
@@ -85,6 +94,9 @@ class _EditDataState extends State<EditRoute> {
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Insira o telefone';
+                        }
+                        if (value.runtimeType != int) {
+                          return 'O telefone deve ser composto apenas por números';
                         }
                         return null;
                       },
